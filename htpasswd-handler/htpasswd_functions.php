@@ -11,6 +11,8 @@ if (! file_exists(HTPASSWD_PATH))
 if (! is_writable(HTPASSWD_PATH)) 
     @chmod(HTPASSWD_PATH, 0644);
 
+// alter_htpasswd_class.php
+include_once('alter_htpasswd_class.php');
 /**
  * add a user to htpasswd file
  */
@@ -23,7 +25,8 @@ if ($_POST['adduser']) {
     if (empty($_POST['password'])) {
         die( errorMsg("Password field can't be empty!") );
     }
-   include_once('htpasswd-adduser.php');     
+   $addUser = new alterHtpasswd(HTPASSWD_PATH);
+   echo $addUser->addUser($_POST['username'], $_POST['password']);    
 }
 
 /**
@@ -34,7 +37,8 @@ if ($_POST['deleteuser']){
    if (empty($_POST['username']))
       die(errorMsg("Username can't be empty"));
     
-   include_once('htpasswd-deleteuser.php');   
+   $delete = new alterHtpasswd(HTPASSWD_PATH);
+   echo $delete->deleteUser($_POST['username']);   
 }
 
 
@@ -50,7 +54,8 @@ if ($_POST['changePass']){
    if (empty($_POST['password']))
       die(errorMsg("Password field can't be empty!"));
  
-   include_once('htpasswd-changepassword.php');
+   $change = new alterHtpasswd(HTPASSWD_PATH);
+   echo $change->changePassword($_POST['username'], $_POST['password']);
 }
 
 
